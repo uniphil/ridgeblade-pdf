@@ -1,0 +1,24 @@
+{
+  "name": "ridgeblade-pdf",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "puppeteer": "^1.11.0",
+    "koa": "^2.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uniphil/ridgeblade-pdf.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/uniphil/ridgeblade-pdf/issues"
+  },
+  "homepage": "https://github.com/uniphil/ridgeblade-pdf#readme"
+}
