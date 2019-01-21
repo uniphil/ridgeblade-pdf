@@ -3,9 +3,9 @@
 const puppeteer = require('puppeteer');
 const Koa = require('koa');
 const info = (...m) => console.log(...m);
-const env = (k, d) => process.env[k] || ( process.env.PRODUCTION
-  ? (console.error(`ERROR: missing env key '${k}'`), process.exit(1))
-  : d);
+const env = (k, d) => process.env.PRODUCTION
+  ? process.env[k] || (console.error(`ERROR: missing env key '${k}'`), process.exit(1))
+  : d;
 
 const reporter = (browser, pat, secret) => async ctx => {
   ctx.assert(ctx.path.startsWith('/report'), 404, `bad path: '${ctx.path}'`);
@@ -36,7 +36,7 @@ const reporter = (browser, pat, secret) => async ctx => {
 };
 
 async function bootstrap() {
-  const secret = env('PDF_SECRET', 'secret');
+  const secret = env('PDF_SECRET', 'so_secure');
   const pat = env('PAT_HOST', 'http://localhost:8000');
 
   info('starting browser...');
