@@ -40,6 +40,8 @@ async function bootstrap() {
   const secret = env('PDF_SECRET', 'so_secure');
   const pat = env('PAT_HOST', 'http://localhost:8000');
 
+  info(`starting in ${secret === 'so_secure' ? 'DEBUG' : 'PRODUCTION'} mode.`);
+
   if (isNaN(port)) {
     throw new Error(`$PORT is not a valid number: ${port}`);
   }
