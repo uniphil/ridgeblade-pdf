@@ -54,13 +54,13 @@ async function bootstrap() {
   }));
 
   info('started.');
-  info('launching koa app...');
+  info(`launching koa app on port ${port}`);
 
   new Koa()
     .use(reporter(browser, pat, secret))
     .listen(parseInt(port));
 
-  info('flying.');
+  info(`flying with ${pat}`);
 }
 
 if (!module.parent) bootstrap();
