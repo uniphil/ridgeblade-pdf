@@ -36,6 +36,7 @@ const reporter = (browser, pat, secret) => async ctx => {
 };
 
 async function bootstrap() {
+  const port = env('PORT', '3000');
   const secret = env('PDF_SECRET', 'so_secure');
   const pat = env('PAT_HOST', 'http://localhost:8000');
 
@@ -53,7 +54,7 @@ async function bootstrap() {
 
   new Koa()
     .use(reporter(browser, pat, secret))
-    .listen(3000);
+    .listen(parseInt(port));
 
   info('flying.');
 }
