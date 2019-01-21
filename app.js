@@ -53,6 +53,7 @@ async function bootstrap() {
     info('shutting down browser...');
     await browser.close();
     info('bye!');
+    process.exit(0);
   }));
 
   info('started.');
