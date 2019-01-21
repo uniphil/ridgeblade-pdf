@@ -41,7 +41,7 @@ async function bootstrap() {
 
   info('starting browser...');
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
   ['SIGINT', 'SIGTERM'].forEach(sig => process.once(sig, async () => {
     info('shutting down browser...');
     await browser.close();
