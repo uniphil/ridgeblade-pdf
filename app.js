@@ -7,13 +7,14 @@ const env = (k, d) => process.env.PRODUCTION
   ? process.env[k] || (console.error(`ERROR: missing env key '${k}'`), process.exit(1))
   : d;
 
-const reporter = (browser, pat, secret) => async ctx => {
+const reporter = (browser, pat) => async ctx => {
   ctx.assert(ctx.path.startsWith('/report'), 404, `bad path: '${ctx.path}'`);
   ctx.assert(ctx.query.id, 400, `bad query: ${JSON.stringify(ctx.query)}`);
-  ctx.assert(ctx.query.secret === secret, 403, `nope`);
-  const {id, hash} = ctx.query;
+  ctx.assert(ctx.query.token, 400, `bad query: missing token ${JSON.stringify(ctx.query)}`);
+  const { id, token } = ctx.query;
   const page = await browser.newPage();
-  const response = await page.goto(`${pat}/project/${id}/report/for-pdf?secret=${secret}`, {
+  const response = await page.goto(`${pat}/project/${id}/report?token=${token}`, {
+    timeout: 25000,  // try to avoid getting killed by heroku
     waitUntil: 'networkidle2',
   });
 
@@ -37,10 +38,9 @@ const reporter = (browser, pat, secret) => async ctx => {
 
 async function bootstrap() {
   const port = parseInt(env('PORT', '3000'));
-  const secret = env('PDF_SECRET', 'so_secure');
   const pat = env('PAT_HOST', 'http://localhost:8000');
 
-  info(`starting in ${secret === 'so_secure' ? 'DEBUG' : 'PRODUCTION'} mode.`);
+  info(`starting in ${process.env.PRODUCTION ? 'PRODUCTION' : 'DEBUG'} mode.`);
 
   if (isNaN(port)) {
     throw new Error(`$PORT is not a valid number: ${port}`);
@@ -60,7 +60,7 @@ async function bootstrap() {
   info(`launching koa app on port ${port}`);
 
   new Koa()
-    .use(reporter(browser, pat, secret))
+    .use(reporter(browser, pat))
     .listen(parseInt(port));
 
   info(`flying with ${pat}`);
