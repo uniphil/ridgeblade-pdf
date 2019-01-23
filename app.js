@@ -13,6 +13,11 @@ const reporter = (browser, pat) => async ctx => {
   ctx.assert(ctx.query.token, 400, `bad query: missing token ${JSON.stringify(ctx.query)}`);
   const { id, token } = ctx.query;
   const page = await browser.newPage();
+  await page.setViewport({
+    width: 800,
+    height: 600,
+    deviceScaleFactor: 2.5,
+  });
   const response = await page.goto(`${pat}/project/${id}/report?token=${token}`, {
     timeout: 25000,  // try to avoid getting killed by heroku
     waitUntil: 'networkidle2',
@@ -23,10 +28,10 @@ const reporter = (browser, pat) => async ctx => {
   const buff = await page.pdf({
     format: 'letter',
     margin: {
-      top: '0.5in',
-      left: '0.5in',
-      right: '0.5in',
-      bottom: '0.5in',
+      top: '0.8in',
+      left: '0.6in',
+      right: '0.6in',
+      bottom: '0.3in',
     },
   });
 
