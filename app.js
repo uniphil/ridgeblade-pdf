@@ -8,6 +8,9 @@ const env = (k, d) => process.env.PRODUCTION
   : d;
 
 const reporter = (browser, pat) => async ctx => {
+  if (ctx.path === '/good-morning') {
+    return ctx.body = 'oh hey hi!';
+  }
   ctx.assert(ctx.path.startsWith('/report'), 404, `bad path: '${ctx.path}'`);
   ctx.assert(ctx.query.id, 400, `bad query: ${JSON.stringify(ctx.query)}`);
   ctx.assert(ctx.query.token, 400, `bad query: missing token ${JSON.stringify(ctx.query)}`);
