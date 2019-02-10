@@ -2,6 +2,7 @@
 
 const puppeteer = require('puppeteer');
 const Koa = require('koa');
+const cors = require('@koa/cors');
 const info = (...m) => console.log(...m);
 const env = (k, d) => process.env.PRODUCTION
   ? process.env[k] || (console.error(`ERROR: missing env key '${k}'`), process.exit(1))
@@ -68,6 +69,7 @@ async function bootstrap() {
   info(`launching koa app on port ${port}`);
 
   new Koa()
+    .use(cors({ origin: pat }))
     .use(reporter(browser, pat))
     .listen(parseInt(port));
 
